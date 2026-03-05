@@ -1,37 +1,20 @@
 {
   "compilerOptions": {
-    // Версия JavaScript, в которую компилируется наш TypeScript
-    // ES2020 поддерживается всеми современными версиями Node.js
     "target": "ES2020",
 
-    // Система модулей. CommonJS = require/module.exports (стандарт Node.js)
-    "module": "CommonJS",
+    // NodeNext — современный ESM режим для Node.js.
+    // Prisma 7 генерирует ESM код, поэтому переключаемся с CommonJS на ESM.
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
 
-    // Папка, куда компилятор положит готовый JavaScript
     "outDir": "./dist",
-
-    // Откуда берём исходники TypeScript
     "rootDir": "./src",
-
-    // Строгий режим TypeScript — включает кучу полезных проверок
-    // Аналог "use strict" но гораздо мощнее
     "strict": true,
-
-    // Разрешает импортировать CommonJS модули как default import
-    // Нужно для: import express from 'express' (вместо import * as express)
     "esModuleInterop": true,
-
-    // Убеждается что импорты регистронезависимы (важно на Windows)
     "forceConsistentCasingInFileNames": true,
-
-    // Пропускает проверку типов в node_modules (ускоряет компиляцию)
     "skipLibCheck": true,
-
-    // Позволяет импортировать JSON файлы напрямую
     "resolveJsonModule": true
   },
-  // Компилируем только файлы в папке src
   "include": ["src/**/*"],
-  // Исключаем node_modules и скомпилированный dist
   "exclude": ["node_modules", "dist"]
 }
