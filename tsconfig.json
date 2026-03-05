@@ -1,12 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-
-    // NodeNext — современный ESM режим для Node.js.
-    // Prisma 7 генерирует ESM код, поэтому переключаемся с CommonJS на ESM.
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-
+    "module": "CommonJS",
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,

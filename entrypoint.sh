@@ -1,12 +1,8 @@
 #!/bin/sh
 set -e
 
-# Применяем миграции перед запуском сервера.
-# migrate deploy — в отличие от migrate dev, не создаёт новых миграций,
-# только применяет уже существующие. Безопасно для продакшна.
 echo "Применяем миграции..."
 npx prisma migrate deploy
 
-# Запускаем скомпилированный сервер
 echo "Запускаем сервер..."
-exec node dist/server.js
+exec npx tsx src/server.ts

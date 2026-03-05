@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import notesRouter from './routes/notes.js';
-import { errorHandler } from './middleware/errorHandler.js';
+import notesRouter from './routes/notes';
+import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
 
