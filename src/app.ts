@@ -6,7 +6,7 @@ import { errorHandler } from './middleware/errorHandler';
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'http://94.176.182.194'],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type'],
 }));
