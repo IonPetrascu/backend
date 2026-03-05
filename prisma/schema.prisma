@@ -1,0 +1,19 @@
+generator client {
+  // Новый генератор Prisma 7
+  provider = "prisma-client"
+  // Куда положить сгенерированный клиент
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  // URL теперь задаётся в prisma.config.ts, не здесь
+  provider = "postgresql"
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

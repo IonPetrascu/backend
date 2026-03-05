@@ -1,0 +1,32 @@
+services:
+
+  # База данных PostgreSQL
+  db:
+    image: postgres:17-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: notes_db
+    volumes:
+      # Данные хранятся на диске VPS — переживают перезапуск контейнера
+      - postgres_data:/var/lib/postgresql/data
+    # Порт НЕ пробрасываем наружу — БД доступна только внутри Docker сети.
+    # Бэкенд достучится до неё по имени сервиса "db".
+
+  # Наш бэкенд
+  backend:
+    build: .
+    restart: always
+    ports:
+      # Пробрасываем порт: хост:контейнер
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/notes_db
+      PORT: 3000
+    depends_on:
+      - db  # сначала поднять БД, потом бэкенд
+
+# Именованный volume — Docker сам управляет где хранить данные на диске
+volumes:
+  postgres_data:
