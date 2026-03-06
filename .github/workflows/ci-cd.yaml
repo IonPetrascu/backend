@@ -28,6 +28,6 @@ jobs:
     steps:
       - name: Deploy
         run: |
-          cd ~/backend
+          cd /root/backend
           git pull
           docker compose up -d --build backend
