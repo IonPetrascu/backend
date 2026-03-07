@@ -15,15 +15,30 @@ enum Role {
   ADMIN
 }
 
+enum BoardRole {
+  OWNER
+  EDITOR
+  VIEWER
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
 model User {
   id           Int      @id @default(autoincrement())
   email        String   @unique
   passwordHash String
+  name         String   @default("")
   role         Role     @default(USER)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  notes        Note[]
+  notes             Note[]
+  boards            BoardMember[]
+  sentInvitations   BoardInvitation[] @relation("InvitedBy")
 }
 
 model Note {
@@ -35,4 +50,62 @@ model Note {
 
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
+}
+
+model Board {
+  id        Int      @id @default(autoincrement())
+  title     String
+  ownerId   Int
+  createdAt DateTime @default(now())
+
+  members     BoardMember[]
+  invitations BoardInvitation[]
+  columns     Column[]
+}
+
+model BoardMember {
+  boardId  Int
+  userId   Int
+  role     BoardRole @default(VIEWER)
+  joinedAt DateTime  @default(now())
+
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([boardId, userId])
+}
+
+model BoardInvitation {
+  id        Int              @id @default(autoincrement())
+  boardId   Int
+  invitedBy Int
+  email     String
+  token     String           @unique
+  role      BoardRole        @default(EDITOR)
+  status    InvitationStatus @default(PENDING)
+  expiresAt DateTime
+  createdAt DateTime         @default(now())
+
+  board   Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  inviter User  @relation("InvitedBy", fields: [invitedBy], references: [id])
+}
+
+model Column {
+  id       Int    @id @default(autoincrement())
+  boardId  Int
+  title    String
+  position Int
+
+  board Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards Card[]
+}
+
+model Card {
+  id        Int      @id @default(autoincrement())
+  columnId  Int
+  title     String
+  position  Int
+  createdAt DateTime @default(now())
+
+  column Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
 }

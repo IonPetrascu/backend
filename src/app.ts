@@ -6,6 +6,8 @@ import connectPgSimple from 'connect-pg-simple';
 import pool from './db';
 import notesRouter from './routes/notes';
 import authRouter from './routes/auth';
+import boardsRouter from './routes/boards';
+import invitationsRouter from './routes/invitations';
 import { errorHandler } from './middleware/errorHandler';
 
 const PgSession = connectPgSimple(session);
@@ -36,8 +38,10 @@ app.use(session({
   },
 }));
 
-app.use('/api/v1/auth',  authRouter);
-app.use('/api/v1/notes', notesRouter);
+app.use('/api/v1/auth',        authRouter);
+app.use('/api/v1/notes',       notesRouter);
+app.use('/api/v1/boards',      boardsRouter);
+app.use('/api/v1/invitations', invitationsRouter);
 
 app.use(errorHandler);
 
